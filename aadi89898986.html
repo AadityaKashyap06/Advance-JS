@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Expense Tracker</h2>
+    <form id="expenseForm">
+      <div class="form-group">
+        <label for="expenseName">Expense Name:</label>
+        <input type="text" class="form-control" id="expenseName" required>
+      </div>
+      <div>
+        <label for="expensgroup">Expense_Group:</label>
+      <select name="Expense group" id="ss1" class="form-control">
+            <option value="Movie">Movies</option>
+            <option value="Movie">Grossary</option>
+            <option value="Movie">Petrol</option>
+            <option value="Movie">Fast food</option>
+      </select>
+      </div>
+      <div class="form-group">
+        <label for="expenseAmount">Expense Amount:</label>
+        <input type="number" class="form-control" id="expenseAmount" required>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="addExpense()">Add Expense</button>
+    </form>
+    <div class="mt-4">
+      <h4>Expense List:</h4>
+      <ul id="expenseList" class="list-group"></ul>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+  <script>
+    function addExpense() {
+  const expenseName = document.getElementById('expenseName').value;
+  const expenseAmount = document.getElementById('expenseAmount').value;
+  const expense_group = document.getElementById('ss1').value;
+  if (expenseName === '' || expenseAmount === '') {
+    alert('Please enter both expense name and amount.');
+    return;
+  }
+  const expense = {
+    name: expenseName,
+    amount: parseFloat(expenseAmount),
+  };
+  addExpenseToList(expense);
+  document.getElementById('expenseName').value = '';
+  document.getElementById('expenseAmount').value = '';
+  document.getElementById('ss1').value = '';
+}
+function addExpenseToList(expense) {
+  const expenseList = document.getElementById('expenseList');
+  const listItem = document.createElement('li');
+  listItem.className = 'list-group-item';
+  listItem.textContent = `${expense.name}: Rs ${expense.amount.toFixed(2)}`;
+  expenseList.appendChild(listItem);
+  saveExpenseToLocalStorage(expense);
+}
+function saveExpenseToLocalStorage(expense) {
+  let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+  expenses.push(expense);
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+}
+  </script>
+
